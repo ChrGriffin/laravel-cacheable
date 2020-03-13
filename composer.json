@@ -1,0 +1,14 @@
+{
+    "name": "chrgriffin/laravel-cacheable",
+    "description": "An agnostic class wrapper that uses Laravel's cache to store responses from methods.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Christian Griffin",
+            "email": "christian.griffin@live.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
