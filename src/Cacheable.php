@@ -9,6 +9,11 @@ abstract class Cacheable
 {
     public function __call($name, $arguments)
     {
+        return $this->cacheWrap($name, $arguments);
+    }
+
+    protected function cacheWrap($name, $arguments)
+    {
         if(!in_array($name, $this->cacheMethods)) {
             return $this->{$name}(...$arguments);
         }
