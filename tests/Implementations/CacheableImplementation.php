@@ -22,6 +22,12 @@ class CacheableImplementation
         return $this;
     }
 
+    public function setCacheSeconds(int $cacheSeconds): CacheableImplementation
+    {
+        $this->cacheSeconds = $cacheSeconds;
+        return $this;
+    }
+
     protected function thisMethodShouldCacheItsResponse(): string
     {
         return $this->response;

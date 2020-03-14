@@ -2,6 +2,8 @@
 
 namespace LaravelCacheable\Tests\Unit;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use LaravelCacheable\Tests\Implementations\CacheableImplementation;
 use LaravelCacheable\Tests\TestCase;
 
@@ -62,5 +64,28 @@ class CacheableTest extends TestCase
             'Yennefer of Vengerberg',
             $this->cacheable->withoutCache()->thisMethodShouldCacheItsResponse()
         );
+    }
+
+    public function testItCachesForThirtyMinutesByDefault(): void
+    {
+        Carbon::setTestNow(now());
+
+        $this->cacheable->setResponse('Geralt of Rivia');
+        $this->cacheable->thisMethodShouldCacheItsResponse();
+
+        $cachedResponse = DB::table('cache')->get()->first();
+        $this->assertEquals(now()->addMinutes(30)->timestamp, $cachedResponse->expiration);
+    }
+
+    public function testItUsesClassPropertyToOverrideCacheTime(): void
+    {
+        Carbon::setTestNow(now());
+
+        $this->cacheable->setResponse('Geralt of Rivia');
+        $this->cacheable->setCacheSeconds(60);
+        $this->cacheable->thisMethodShouldCacheItsResponse();
+
+        $cachedResponse = DB::table('cache')->get()->first();
+        $this->assertEquals(now()->addMinutes(1)->timestamp, $cachedResponse->expiration);
     }
 }

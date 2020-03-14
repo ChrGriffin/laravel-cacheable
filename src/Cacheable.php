@@ -13,6 +13,9 @@ trait Cacheable
     /** @var bool */
     protected $forceNoCache = false;
 
+    /** @var null|int */
+    protected $cacheSeconds = null;
+
     public function cache()
     {
         $this->forceCache = true;
@@ -38,7 +41,9 @@ trait Cacheable
             return $this->{$name}(...$arguments);
         }
 
-        return Cache::remember($name . Str::slug(serialize($arguments)), 30, function () use ($name, $arguments) {
+        $cacheKey = $name . Str::slug(serialize($arguments));
+        $cacheExpire = now()->addSeconds($this->cacheSeconds ?? 1800);
+        return Cache::remember($cacheKey, $cacheExpire, function () use ($name, $arguments) {
             return $this->{$name}(...$arguments);
         });
     }
