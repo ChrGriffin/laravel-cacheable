@@ -9,8 +9,12 @@ abstract class Cacheable
 {
     public function __call($name, $arguments)
     {
-        Cache::remember($name . Str::slug(serialize($arguments)), 30, function () use ($name, $arguments) {
-            $this->{$name}(...$arguments);
+        if(!in_array($name, $this->cacheMethods)) {
+            return $this->{$name}(...$arguments);
+        }
+
+        return Cache::remember($name . Str::slug(serialize($arguments)), 30, function () use ($name, $arguments) {
+            return $this->{$name}(...$arguments);
         });
     }
 }

@@ -16,12 +16,21 @@ class CacheableTest extends TestCase
         $this->cacheable = new CacheableClass();
     }
 
-    public function testItCachesTheReturnOfAMethod(): void
+    public function testItCachesTheReturnOfAMethodIndicatedInTheClassProperty(): void
     {
         $this->cacheable->setResponse('Geralt of Rivia');
         $this->assertEquals('Geralt of Rivia', $this->cacheable->thisMethodShouldCacheItsResponse());
 
         $this->cacheable->setResponse('Yennefer of Vengerberg');
         $this->assertEquals('Geralt of Rivia', $this->cacheable->thisMethodShouldCacheItsResponse());
+    }
+
+    public function testItDoesNotCacheTheReturnOfAMethodNotIndicatedInTheClassProperty(): void
+    {
+        $this->cacheable->setResponse('Geralt of Rivia');
+        $this->assertEquals('Geralt of Rivia', $this->cacheable->thisMethodShouldNotCacheItsResponse());
+
+        $this->cacheable->setResponse('Yennefer of Vengerberg');
+        $this->assertEquals('Yennefer of Vengerberg', $this->cacheable->thisMethodShouldNotCacheItsResponse());
     }
 }
