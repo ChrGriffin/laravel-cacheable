@@ -33,4 +33,34 @@ class CacheableTest extends TestCase
         $this->cacheable->setResponse('Yennefer of Vengerberg');
         $this->assertEquals('Yennefer of Vengerberg', $this->cacheable->thisMethodShouldNotCacheItsResponse());
     }
+
+    public function testItCanBeForcedToUseCache(): void
+    {
+        $this->cacheable->setResponse('Geralt of Rivia');
+        $this->assertEquals(
+            'Geralt of Rivia',
+            $this->cacheable->cache()->thisMethodShouldNotCacheItsResponse()
+        );
+
+        $this->cacheable->setResponse('Yennefer of Vengerberg');
+        $this->assertEquals(
+            'Geralt of Rivia',
+            $this->cacheable->cache()->thisMethodShouldNotCacheItsResponse()
+        );
+    }
+
+    public function testItCanBeForcedToNotUseCache(): void
+    {
+        $this->cacheable->setResponse('Geralt of Rivia');
+        $this->assertEquals(
+            'Geralt of Rivia',
+            $this->cacheable->withoutCache()->thisMethodShouldCacheItsResponse()
+        );
+
+        $this->cacheable->setResponse('Yennefer of Vengerberg');
+        $this->assertEquals(
+            'Yennefer of Vengerberg',
+            $this->cacheable->withoutCache()->thisMethodShouldCacheItsResponse()
+        );
+    }
 }
