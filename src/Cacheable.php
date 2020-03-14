@@ -5,7 +5,7 @@ namespace LaravelCacheable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
-abstract class Cacheable
+trait Cacheable
 {
     /** @var bool */
     protected $forceCache = false;
@@ -13,14 +13,14 @@ abstract class Cacheable
     /** @var bool */
     protected $forceNoCache = false;
 
-    public function cache(): Cacheable
+    public function cache()
     {
         $this->forceCache = true;
         $this->forceNoCache = false;
         return $this;
     }
 
-    public function withoutCache(): Cacheable
+    public function withoutCache()
     {
         $this->forceNoCache = true;
         $this->forceCache = false;

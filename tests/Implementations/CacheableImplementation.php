@@ -1,11 +1,13 @@
 <?php
 
-namespace LaravelCacheable\Tests\Mocks;
+namespace LaravelCacheable\Tests\Implementations;
 
 use LaravelCacheable\Cacheable;
 
-class CacheableClass extends Cacheable
+class CacheableImplementation
 {
+    use Cacheable;
+
     /** @var string */
     private $response;
 
@@ -14,7 +16,7 @@ class CacheableClass extends Cacheable
         'thisMethodShouldCacheItsResponse'
     ];
 
-    public function setResponse(string $response): CacheableClass
+    public function setResponse(string $response): CacheableImplementation
     {
         $this->response = $response;
         return $this;

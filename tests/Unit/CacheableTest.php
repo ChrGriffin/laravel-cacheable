@@ -2,18 +2,18 @@
 
 namespace LaravelCacheable\Tests\Unit;
 
-use LaravelCacheable\Tests\Mocks\CacheableClass;
+use LaravelCacheable\Tests\Implementations\CacheableImplementation;
 use LaravelCacheable\Tests\TestCase;
 
 class CacheableTest extends TestCase
 {
-    /** @var CacheableClass */
+    /** @var CacheableImplementation */
     private $cacheable;
 
     public function setUp(): void
     {
         parent::setUp();
-        $this->cacheable = new CacheableClass();
+        $this->cacheable = new CacheableImplementation();
     }
 
     public function testItCachesTheReturnOfAMethodIndicatedInTheClassProperty(): void
