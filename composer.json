@@ -21,5 +21,12 @@
             "LaravelCacheable\\": "src",
             "LaravelCacheable\\Tests\\": "tests"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "LaravelCacheable\\ServiceProvider"
+            ]
+        }
     }
 }
