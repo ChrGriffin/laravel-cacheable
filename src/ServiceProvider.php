@@ -6,15 +6,27 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class ServiceProvider extends BaseServiceProvider
 {
+    /** @var ApplicationAspectKernel */
+    private static $kernel;
+
+    public static function getKernel(): ?ApplicationAspectKernel
+    {
+        return self::$kernel;
+    }
+
     public function boot(): void
     {
-        $applicationAspectKernel = ApplicationAspectKernel::getInstance();
-        $applicationAspectKernel->init([
-            'debug'        => true,
-            'cacheDir'     => storage_path('framework/cache/laravel-cacheable'),
-            'includePaths' => [
-                __DIR__ . '/../tests/Implementations'
-            ]
+        self::$kernel = $applicationAspectKernel = ApplicationAspectKernel::getInstance();
+        self::$kernel->init([
+            'debug'        => config('app.debug'),
+            'cacheDir'     => config(
+                'laravelCacheable.cache.path',
+                storage_path('framework/cache/laravel-cacheable')
+            ),
+            'includePaths' => config(
+                'laravelCacheable.paths',
+                [__DIR__ . '/../tests/Implementations']
+            )
         ]);
     }
 }
