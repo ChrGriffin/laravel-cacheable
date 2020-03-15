@@ -8,7 +8,7 @@ use Doctrine\Common\Annotations\Annotation;
  * @Annotation
  * @Target("METHOD")
  */
-class Cacheable extends Annotation
+class Cache extends Annotation
 {
     public $seconds = 1800;
 }

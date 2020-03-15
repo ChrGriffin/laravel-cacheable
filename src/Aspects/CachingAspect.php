@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 class CachingAspect implements Aspect
 {
     /**
-     * @Around("@execution(LaravelCacheable\Annotations\Cacheable)")
+     * @Around("@execution(LaravelCacheable\Annotations\Cache)")
      */
     public function aroundCacheable(MethodInvocation $invocation)
     {
@@ -20,17 +20,26 @@ class CachingAspect implements Aspect
 
     protected function cacheWrap(MethodInvocation $invocation)
     {
-        /*if(!$this->shouldCacheMethod($name)) {
-            return $this->{$name}(...$arguments);
-        }*/
+        if(!$this->shouldCacheMethod($invocation)) {
+            return $invocation->proceed();
+        }
 
         $cacheKey = Str::slug($invocation->getMethod()->name . serialize($invocation->getArguments()));
         $cacheExpire = now()->addSeconds(
-            $invocation->getMethod()->getAnnotation('LaravelCacheable\Annotations\Cacheable')->seconds
+            $invocation->getMethod()->getAnnotation('LaravelCacheable\Annotations\Cache')->seconds
                 ?? 1800
         );
         return Cache::remember($cacheKey, $cacheExpire, function () use ($invocation) {
             return $invocation->proceed();
         });
+    }
+
+    protected function shouldCacheMethod(MethodInvocation $invocation): bool
+    {
+        if(isset($invocation->getThis()->forceNoCache)) {
+            return !$invocation->getThis()->forceNoCache;
+        }
+
+        return true;
     }
 }

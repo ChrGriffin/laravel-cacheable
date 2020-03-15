@@ -3,13 +3,16 @@
 namespace LaravelCacheable\Tests\Implementations;
 
 use LaravelCacheable\Annotations\Cache;
+use LaravelCacheable\Traits\Cacheable as Cacheable;
 
-class CacheableImplementation
+class CacheableImplementationWithTrait
 {
+    use Cacheable;
+
     /** @var string */
     private $response;
 
-    public function setResponse(string $response): CacheableImplementation
+    public function setResponse(string $response): CacheableImplementationWithTrait
     {
         $this->response = $response;
         return $this;
@@ -17,12 +20,6 @@ class CacheableImplementation
 
     /** @Cache */
     public function defaultCacheMethod(): string
-    {
-        return $this->response;
-    }
-
-    /** @Cache(seconds=3600) */
-    public function userDefinedTimeCacheMethod(): string
     {
         return $this->response;
     }
