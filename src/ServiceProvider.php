@@ -14,17 +14,26 @@ class ServiceProvider extends BaseServiceProvider
         return self::$kernel;
     }
 
+    public function register(): void
+    {
+        $this->mergeConfigFrom(__DIR__ . '/config/laravel-cacheable.php', 'laravel-cacheable');
+    }
+
     public function boot(): void
     {
+        $this->publishes([
+            __DIR__ . 'config/laravel-cacheable.php'
+        ]);
+
         self::$kernel = $applicationAspectKernel = ApplicationAspectKernel::getInstance();
         self::$kernel->init([
             'debug'        => config('app.debug'),
             'cacheDir'     => config(
-                'laravelCacheable.cache.path',
+                'laravel-cacheable.cache.path',
                 storage_path('framework/cache/laravel-cacheable')
             ),
             'includePaths' => config(
-                'laravelCacheable.paths',
+                'laravel-cacheable.paths',
                 [__DIR__ . '/../tests/Implementations']
             )
         ]);

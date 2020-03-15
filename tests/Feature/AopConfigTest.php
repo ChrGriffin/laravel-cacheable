@@ -10,8 +10,8 @@ class AopConfigTest extends TestCase
     protected function getEnvironmentSetUp($app): void
     {
         $app['config']->set('app.debug', true);
-        $app['config']->set('laravelCacheable.cache.path', __DIR__ . 'Geralt of Rivia');
-        $app['config']->set('laravelCacheable.paths', [__DIR__ . 'Yennefer of Vengerberg']);
+        $app['config']->set('laravel-cacheable.cache.path', __DIR__ . 'Geralt of Rivia');
+        $app['config']->set('laravel-cacheable.paths', [__DIR__ . 'Yennefer of Vengerberg']);
     }
 
     public function testItUsesLaravelCacheableConfigForAopOptions(): void
