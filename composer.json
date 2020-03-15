@@ -1,6 +1,6 @@
 {
     "name": "chrgriffin/laravel-cacheable",
-    "description": "An agnostic class wrapper that uses Laravel's cache to store responses from methods.",
+    "description": "A GOAOP implementation for easily caching method calls.",
     "type": "library",
     "license": "MIT",
     "authors": [
