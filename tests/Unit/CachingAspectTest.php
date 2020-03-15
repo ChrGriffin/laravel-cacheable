@@ -12,6 +12,11 @@ class CachingAspectTest extends TestCase
     /** @var CacheableImplementation */
     private $cacheable;
 
+    protected function getEnvironmentSetUp($app): void
+    {
+        $app['config']->set('laravel-cacheable.paths', [__DIR__ . '/../../tests/Implementations']);
+    }
+
     public function setUp(): void
     {
         parent::setUp();
