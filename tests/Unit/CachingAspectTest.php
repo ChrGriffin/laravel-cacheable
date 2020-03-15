@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use LaravelCacheable\Tests\Implementations\CacheableImplementation;
 use LaravelCacheable\Tests\TestCase;
 
-class CacheableTest extends TestCase
+class CachingAspectTest extends TestCase
 {
     /** @var CacheableImplementation */
     private $cacheable;
