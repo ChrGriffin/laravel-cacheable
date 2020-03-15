@@ -18,74 +18,34 @@ class CacheableTest extends TestCase
         $this->cacheable = new CacheableImplementation();
     }
 
-    public function testItCachesTheReturnOfAMethodIndicatedInTheClassProperty(): void
+    public function testItCachesTheReturnOfAMethodAnnotatedAsCacheable(): void
     {
         $this->cacheable->setResponse('Geralt of Rivia');
-        $this->assertEquals('Geralt of Rivia', $this->cacheable->thisMethodShouldCacheItsResponse());
+        $this->assertEquals('Geralt of Rivia', $this->cacheable->defaultCacheMethod());
 
         $this->cacheable->setResponse('Yennefer of Vengerberg');
-        $this->assertEquals('Geralt of Rivia', $this->cacheable->thisMethodShouldCacheItsResponse());
+        $this->assertEquals('Geralt of Rivia', $this->cacheable->defaultCacheMethod());
     }
 
-    public function testItDoesNotCacheTheReturnOfAMethodNotIndicatedInTheClassProperty(): void
-    {
-        $this->cacheable->setResponse('Geralt of Rivia');
-        $this->assertEquals('Geralt of Rivia', $this->cacheable->thisMethodShouldNotCacheItsResponse());
-
-        $this->cacheable->setResponse('Yennefer of Vengerberg');
-        $this->assertEquals('Yennefer of Vengerberg', $this->cacheable->thisMethodShouldNotCacheItsResponse());
-    }
-
-    public function testItCanBeForcedToUseCache(): void
-    {
-        $this->cacheable->setResponse('Geralt of Rivia');
-        $this->assertEquals(
-            'Geralt of Rivia',
-            $this->cacheable->cache()->thisMethodShouldNotCacheItsResponse()
-        );
-
-        $this->cacheable->setResponse('Yennefer of Vengerberg');
-        $this->assertEquals(
-            'Geralt of Rivia',
-            $this->cacheable->cache()->thisMethodShouldNotCacheItsResponse()
-        );
-    }
-
-    public function testItCanBeForcedToNotUseCache(): void
-    {
-        $this->cacheable->setResponse('Geralt of Rivia');
-        $this->assertEquals(
-            'Geralt of Rivia',
-            $this->cacheable->withoutCache()->thisMethodShouldCacheItsResponse()
-        );
-
-        $this->cacheable->setResponse('Yennefer of Vengerberg');
-        $this->assertEquals(
-            'Yennefer of Vengerberg',
-            $this->cacheable->withoutCache()->thisMethodShouldCacheItsResponse()
-        );
-    }
-
-    public function testItCachesForThirtyMinutesByDefault(): void
+    public function testItCachesFor30MinutesByDefault(): void
     {
         Carbon::setTestNow(now());
 
         $this->cacheable->setResponse('Geralt of Rivia');
-        $this->cacheable->thisMethodShouldCacheItsResponse();
+        $this->cacheable->defaultCacheMethod();
 
-        $cachedResponse = DB::table('cache')->get()->first();
+        $cachedResponse = DB::table('cache')->first();
         $this->assertEquals(now()->addMinutes(30)->timestamp, $cachedResponse->expiration);
     }
 
-    public function testItUsesClassPropertyToOverrideCacheTime(): void
+    public function testItCachesForThePassedNumberOfSecondsIfGiven(): void
     {
         Carbon::setTestNow(now());
 
         $this->cacheable->setResponse('Geralt of Rivia');
-        $this->cacheable->setCacheSeconds(60);
-        $this->cacheable->thisMethodShouldCacheItsResponse();
+        $this->cacheable->userDefinedTimeCacheMethod();
 
-        $cachedResponse = DB::table('cache')->get()->first();
-        $this->assertEquals(now()->addMinutes(1)->timestamp, $cachedResponse->expiration);
+        $cachedResponse = DB::table('cache')->first();
+        $this->assertEquals(now()->addMinutes(60)->timestamp, $cachedResponse->expiration);
     }
 }

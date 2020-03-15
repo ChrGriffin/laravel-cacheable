@@ -2,19 +2,12 @@
 
 namespace LaravelCacheable\Tests\Implementations;
 
-use LaravelCacheable\Cacheable;
+use LaravelCacheable\Annotations\Cacheable;
 
 class CacheableImplementation
 {
-    use Cacheable;
-
     /** @var string */
     private $response;
-
-    /** @var string[] */
-    protected $cacheMethods = [
-        'thisMethodShouldCacheItsResponse'
-    ];
 
     public function setResponse(string $response): CacheableImplementation
     {
@@ -22,18 +15,14 @@ class CacheableImplementation
         return $this;
     }
 
-    public function setCacheSeconds(int $cacheSeconds): CacheableImplementation
-    {
-        $this->cacheSeconds = $cacheSeconds;
-        return $this;
-    }
-
-    protected function thisMethodShouldCacheItsResponse(): string
+    /** @Cacheable */
+    public function defaultCacheMethod(): string
     {
         return $this->response;
     }
 
-    protected function thisMethodShouldNotCacheItsResponse(): string
+    /** @Cacheable(seconds=3600) */
+    public function userDefinedTimeCacheMethod(): string
     {
         return $this->response;
     }
