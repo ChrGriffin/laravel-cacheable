@@ -22,7 +22,7 @@ class ServiceProvider extends BaseServiceProvider
     public function boot(): void
     {
         $this->publishes([
-            __DIR__ . '/config/laravel-cacheable.php'
+            __DIR__ . '/config/laravel-cacheable.php' => config_path('laravel-cacheable.php')
         ]);
 
         self::$kernel = $applicationAspectKernel = ApplicationAspectKernel::getInstance();
