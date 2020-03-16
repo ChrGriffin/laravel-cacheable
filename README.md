@@ -8,6 +8,8 @@
 `laravel-cacheable` makes it easy to automagically cache the results of any arbitrary class method, using your configured Laravel cache driver, by simply adding a docblock annotation to that method.
 
 ```php
+use LaravelCacheable\Annotations\Cache;
+
 class MyClass
 {
     /** @Cache(seconds=3600) */
@@ -70,6 +72,8 @@ return [
 Now that the package is installed, caching the results of a method call is as easy as [making sure your Laravel cache is set up](https://laravel.com/docs/master/cache) and then adding an annotation to your method:
 
 ```php
+use LaravelCacheable\Annotations\Cache;
+
 class MyClass
 {
     /** @Cache */
@@ -85,6 +89,8 @@ class MyClass
 By default, `laravel-cacheable` will cache a method return for 30 minutes. If you want to cache a method for a different length of time, you can add a `seconds` property to the annotation:
 
 ```php
+use LaravelCacheable\Annotations\Cache;
+
 class MyClass
 {
     /** @Cache(seconds=3600) */
@@ -100,9 +106,12 @@ class MyClass
 The docblock alone is enough to automatically cache the results of a method. For more advanced behaviours, you will also need to use the `Cacheable` trait:
 
 ```php
+use LaravelCacheable\Annotations\Cache;
+use LaravelCacheable\Traits\Cacheable;
+
 class MyClass
 {
-    use \LaravelCacheable\Traits\Cacheable;
+    use Cacheable;
 
     /** @Cache(seconds=3600) */
     public function cacheMe(): string 
